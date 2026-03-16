@@ -1015,7 +1015,7 @@
     <div class="install-block">
       <span class="install-label">INSTALL</span>
       <span class="install-code">
-        <span class="cmd">npx skins</span> add agent-skins <span class="arg">--skin</span> jack-sparrow
+        <span class="cmd">npx agent-skins</span> add jack-sparrow
       </span>
       <button class="copy-btn" onclick="copyHero()" title="Copy command">⎘</button>
     </div>
@@ -1080,7 +1080,7 @@
         <div class="step-num">2</div>
         <div class="step-title">Install with one command</div>
         <div class="step-desc">Copy the install command and run it in your project root.</div>
-        <div class="step-code"><span class="c">npx skins</span> add agent-skins <span class="g">--skin</span> yoda</div>
+        <div class="step-code"><span class="c">npx agent-skins</span> add yoda</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
@@ -1385,7 +1385,7 @@
     const skin = SKINS.find(s => s.name === name);
     if (!skin) return;
 
-    const installCmd = `npx skins add agent-skins --skin ${skin.name}`;
+    const installCmd = `npx agent-skins add ${skin.name}`;
     const manualCmd = `curl https://azw293.github.io/agent-skins/skins/${skin.name}/SKIN.md`;
 
     document.getElementById('modal-content').innerHTML = `
@@ -1414,7 +1414,7 @@
             <button class="modal-copy-btn" onclick="copyText('${installCmd}')">⎘ Copy</button>
           </div>
           <div class="modal-install-code">
-            <span class="kw">npx skins</span> add agent-skins <span class="flag">--skin</span> <span class="str">${skin.name}</span>
+            <span class="kw">npx agent-skins</span> add <span class="str">${skin.name}</span>
           </div>
         </div>
         <div class="modal-install">
@@ -1471,11 +1471,11 @@
   }
 
   function copyInstall(name) {
-    copyText(`npx skins add agent-skins --skin ${name}`);
+    copyText(`npx agent-skins add ${name}`);
   }
 
   function copyHero() {
-    copyText('npx skins add agent-skins --skin jack-sparrow');
+    copyText('npx agent-skins add jack-sparrow');
   }
 
   // Init

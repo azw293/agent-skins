@@ -130,7 +130,7 @@ To switch from one skin to another, replace the skin block in your CLAUDE.md:
 
 Or use the interactive selector (coming soon):
 ```bash
-npx skins use
+npx agent-skins use
 # → opens interactive skin picker
 ```
 
