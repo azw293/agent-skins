@@ -36,6 +36,17 @@ function isSkinInstalled(content, skinName) {
   return content.includes(SKIN_MARKER_START(skinName));
 }
 
+// Returns array of all skin names currently installed in the file
+function getInstalledSkins(content) {
+  const re = /<!-- skins:start:([\w-]+) -->/g;
+  const found = [];
+  let match;
+  while ((match = re.exec(content)) !== null) {
+    found.push(match[1]);
+  }
+  return found;
+}
+
 function wrapSkin(skinContent, skinName) {
   return `\n${SKIN_MARKER_START(skinName)}\n${skinContent}\n${SKIN_MARKER_END(skinName)}\n`;
 }
@@ -126,11 +137,30 @@ async function add(args) {
   ensureDir(targetFile);
   const existing = fs.existsSync(targetFile) ? fs.readFileSync(targetFile, 'utf8') : '';
 
-  // Check if already installed
+  // Check if this exact skin is already installed
   if (isSkinInstalled(existing, skinName)) {
     log.warn(`Skin ${c.bold}${skinName}${c.reset} is already installed in ${c.cyan}${path.relative(process.cwd(), targetFile)}${c.reset}`);
     log.blank();
     log.info(`To reinstall, run:  ${c.gray}npx agent-skins remove ${skinName}${c.reset}  then add again.`);
+    log.blank();
+    return;
+  }
+
+  // Check if a DIFFERENT skin is already installed — skins conflict with each other
+  const installedSkins = getInstalledSkins(existing);
+  if (installedSkins.length > 0 && !flags.force) {
+    log.blank();
+    log.warn(`A skin is already active in ${c.cyan}${path.relative(process.cwd(), targetFile)}${c.reset}:`);
+    installedSkins.forEach(s => log.raw(`     ${c.yellow}→${c.reset} ${c.bold}${s}${c.reset}`));
+    log.blank();
+    log.raw(`  Running multiple skins at once will cause them to conflict.`);
+    log.raw(`  Remove the existing skin first, then add the new one:`);
+    log.blank();
+    installedSkins.forEach(s => log.raw(`     ${c.gray}npx agent-skins remove ${s}${c.reset}`));
+    log.raw(`     ${c.gray}npx agent-skins add ${skinName}${c.reset}`);
+    log.blank();
+    log.raw(`  Or force install anyway (not recommended):`);
+    log.raw(`     ${c.gray}npx agent-skins add ${skinName} --force${c.reset}`);
     log.blank();
     return;
   }
