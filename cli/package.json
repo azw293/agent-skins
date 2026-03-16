@@ -1,17 +1,26 @@
 {
-  "name": "agent-skins",
+  "name": "skins",
   "version": "1.0.0",
   "description": "CLI for the agent-skins marketplace — give your AI agent a personality",
-  "keywords": ["ai", "agent", "skins", "claude", "cursor", "codex", "persona", "llm"],
+  "keywords": [
+    "ai",
+    "agent",
+    "skins",
+    "claude",
+    "cursor",
+    "codex",
+    "persona",
+    "llm"
+  ],
   "homepage": "https://azw293.github.io/agent-skins",
   "repository": {
     "type": "git",
-    "url": "https://github.com/azw293/agent-skins"
+    "url": "git+https://github.com/azw293/agent-skins.git"
   },
   "license": "MIT",
   "author": "azw293",
   "bin": {
-    "skins": "./bin/skins.js"
+    "skins": "bin/skins.js"
   },
   "main": "./lib/index.js",
   "engines": {
