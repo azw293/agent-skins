@@ -1,6 +1,6 @@
 {
-  "name": "skins",
-  "version": "1.0.0",
+  "name": "agent-skins",
+  "version": "1.0.1",
   "description": "CLI for the agent-skins marketplace — give your AI agent a personality",
   "keywords": [
     "ai",
