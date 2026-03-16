@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>skins.sh — AI Agent Character Skins</title>
+  <meta name="description" content="The open marketplace for AI agent character skins. Give your agent a personality in one command." />
+  <meta property="og:title" content="skins.sh — AI Agent Character Skins" />
+  <meta property="og:description" content="The open marketplace for AI agent character skins. Transform your AI agent into any character." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080810;
+      --bg2: #0e0e1a;
+      --bg3: #14141f;
+      --border: #1e1e2e;
+      --border2: #2a2a3e;
+      --text: #e2e2f0;
+      --text2: #9090b0;
+      --text3: #5a5a7a;
+      --accent: #7c3aed;
+      --accent2: #9d5cf5;
+      --accent3: #c084fc;
+      --green: #22c55e;
+      --blue: #3b82f6;
+      --orange: #f59e0b;
+      --pink: #ec4899;
+      --red: #ef4444;
+      --teal: #14b8a6;
+      --glow: rgba(124, 58, 237, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8, 8, 16, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span { color: var(--accent3); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      color: var(--text2);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .nav-link:hover { background: var(--bg2); color: var(--text); }
+
+    .btn-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    .btn-github:hover { background: var(--bg3); border-color: var(--accent); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: var(--accent3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge::before { content: '✦'; font-size: 10px; }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    h1 .grad {
+      background: linear-gradient(135deg, #fff 0%, var(--accent3) 60%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text2);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .install-block {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+    }
+
+    .install-label {
+      padding: 10px 14px;
+      color: var(--accent3);
+      border-right: 1px solid var(--border2);
+      background: var(--bg3);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .install-code {
+      padding: 10px 16px;
+      color: var(--text);
+    }
+
+    .install-code .cmd { color: var(--accent3); }
+    .install-code .arg { color: var(--green); }
+
+    .copy-btn {
+      padding: 10px 14px;
+      background: none;
+      border: none;
+      border-left: 1px solid var(--border2);
+      color: var(--text3);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 14px;
+    }
+
+    .copy-btn:hover { background: var(--bg3); color: var(--text); }
+
+    .btn-docs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .btn-docs:hover { background: var(--bg2); color: var(--text); border-color: var(--accent); }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      margin-bottom: 60px;
+    }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-num span { color: var(--accent3); }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Search ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px 16px 12px 40px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--text3); }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Skin Card ── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15); }
+    .card:hover::before { opacity: 0.04; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-emoji {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .card-category {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+
+    .cat-fictional { color: #a78bfa; border-color: rgba(167, 139, 250, 0.3); background: rgba(167, 139, 250, 0.1); }
+    .cat-archetype { color: #34d399; border-color: rgba(52, 211, 153, 0.3); background: rgba(52, 211, 153, 0.1); }
+    .cat-historical { color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1); }
+    .cat-brand { color: #60a5fa; border-color: rgba(96, 165, 250, 0.3); background: rgba(96, 165, 250, 0.1); }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-preview {
+      font-size: 12px;
+      color: var(--text3);
+      font-style: italic;
+      border-left: 2px solid var(--border2);
+      padding-left: 10px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--text3);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-compat {
+      display: flex;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .compat-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .card-install-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: var(--accent3);
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .card-install-btn:hover { background: rgba(124, 58, 237, 0.3); border-color: var(--accent); color: #fff; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-header {
+      padding: 28px 28px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .modal-emoji { font-size: 52px; }
+
+    .modal-close {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .modal-close:hover { background: var(--border2); color: var(--text); }
+
+    .modal-body { padding: 0 28px 28px; }
+
+    .modal-name {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .modal-category { display: inline-flex; margin-bottom: 14px; }
+
+    .modal-desc {
+      color: var(--text2);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .modal-preview {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .modal-preview-label {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .modal-preview-text {
+      font-size: 14px;
+      color: var(--text2);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .modal-section-title {
+      font-size: 12px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .modal-tag {
+      font-size: 12px;
+      color: var(--text2);
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      padding: 4px 10px;
+      border-radius: 5px;
+    }
+
+    .modal-install {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .modal-install-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-install-label {
+      font-size: 12px;
+      color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .modal-copy-btn {
+      background: none;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .modal-copy-btn:hover { background: var(--border2); color: var(--text); }
+
+    .modal-install-code {
+      padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .modal-install-code .kw { color: var(--accent3); }
+    .modal-install-code .str { color: var(--green); }
+    .modal-install-code .flag { color: var(--orange); }
+
+    .modal-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .meta-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .meta-key {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+
+    .meta-val { font-size: 13px; color: var(--text2); }
+
+    /* ── How it works ── */
+    .how {
+      margin: 60px 0;
+      padding: 40px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .how-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .how-sub { color: var(--text2); font-size: 14px; margin-bottom: 32px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .step-title { font-size: 15px; font-weight: 600; }
+    .step-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+    .step-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text2);
+    }
+
+    .step-code .c { color: var(--accent3); }
+    .step-code .g { color: var(--green); }
+
+    /* ── Format section ── */
+    .format-section {
+      margin: 0 0 60px;
+      padding: 40px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .format-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .format-sub { color: var(--text2); font-size: 14px; margin-bottom: 24px; }
+
+    .code-block {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .code-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border2);
+      background: var(--bg3);
+    }
+
+    .code-filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    .code-lang {
+      font-size: 11px;
+      color: var(--text3);
+      background: var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    pre {
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: var(--text2);
+    }
+
+    pre .yaml-key { color: #7dd3fc; }
+    pre .yaml-val { color: #86efac; }
+    pre .yaml-str { color: #fca5a5; }
+    pre .yaml-sep { color: #94a3b8; }
+    pre .comment { color: #64748b; font-style: italic; }
+    pre .heading { color: var(--accent3); font-weight: bold; }
+    pre .em { color: var(--text); }
+
+    /* ── CTA section ── */
+    .cta-section {
+      text-align: center;
+      padding: 60px 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; }
+
+    .cta-sub {
+      color: var(--text2);
+      font-size: 15px;
+      margin-bottom: 28px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid var(--accent2);
+    }
+
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); }
+
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--text2);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { background: var(--bg2); color: var(--text); border-color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 32px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left { display: flex; align-items: center; gap: 16px; }
+    .footer-logo { font-weight: 700; font-size: 15px; }
+    .footer-logo span { color: var(--accent3); }
+    .footer-copy { font-size: 13px; color: var(--text3); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-link {
+      font-size: 13px;
+      color: var(--text3);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-link:hover { color: var(--text); }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg2);
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── No results ── */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text3);
+      font-size: 15px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-links .nav-link { display: none; }
+      .stats-bar { gap: 20px; }
+      .how { padding: 24px; }
+      .format-section { padding: 24px; }
+      .modal-body { padding: 0 20px 20px; }
+      .modal-header { padding: 20px 20px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">🎭</div>
+      <span class="logo-text">skins<span>.sh</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#browse" class="nav-link">Browse</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#spec" class="nav-link">Spec</a>
+      <a href="https://github.com/azw293/agent-skins" target="_blank" class="btn-github">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Open Source · MIT License · v1.0</div>
+  <h1><span class="grad">Give your AI agent<br/>a personality</span></h1>
+  <p class="hero-sub">The open marketplace for AI agent character skins. Transform your coding agent, chatbot, or AI assistant into any character — in seconds.</p>
+  <div class="hero-cta">
+    <div class="install-block">
+      <span class="install-label">INSTALL</span>
+      <span class="install-code">
+        <span class="cmd">npx skins</span> add agent-skins <span class="arg">--skin</span> jack-sparrow
+      </span>
+      <button class="copy-btn" onclick="copyHero()" title="Copy command">⎘</button>
+    </div>
+    <a href="#spec" class="btn-docs">📖 Read the docs</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" id="skin-count"><span>10</span></div>
+    <div class="stat-label">Skins</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>5</span></div>
+    <div class="stat-label">Agent Targets</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>MIT</span></div>
+    <div class="stat-label">License</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>100%</span></div>
+    <div class="stat-label">Open Source</div>
+  </div>
+</div>
+
+<!-- Main -->
+<main>
+
+  <!-- Browse -->
+  <section id="browse">
+    <div class="section-header">
+      <div class="section-title">Browse Skins</div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="filter('all', this)">All</button>
+        <button class="filter-btn" onclick="filter('fictional', this)">Fictional</button>
+        <button class="filter-btn" onclick="filter('archetype', this)">Archetypes</button>
+        <button class="filter-btn" onclick="filter('historical', this)">Historical</button>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search skins by name, character, or mood..." oninput="renderGrid()" />
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="how">
+    <div class="how-title">How it works</div>
+    <p class="how-sub">Install any skin in under 30 seconds. Works with Claude Code, Cursor, Codex CLI, and any agent that reads a system prompt.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Browse & pick a skin</div>
+        <div class="step-desc">Find a character that matches the personality you want your agent to have.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Install with one command</div>
+        <div class="step-desc">Copy the install command and run it in your project root.</div>
+        <div class="step-code"><span class="c">npx skins</span> add agent-skins <span class="g">--skin</span> yoda</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">The skin is added to your agent</div>
+        <div class="step-desc">The SKIN.md is appended to your CLAUDE.md / agent config. Your agent is now in character.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Or just copy the prompt</div>
+        <div class="step-desc">Paste the SKIN.md body directly into any system prompt — it works with any LLM API.</div>
+        <div class="step-code"><span class="c">curl</span> skins.sh/r/yoda | <span class="g">pbcopy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Format spec -->
+  <section id="spec" class="format-section">
+    <div class="format-title">The SKIN.md Format</div>
+    <p class="format-sub">A skin is a directory containing a single SKIN.md file — YAML frontmatter for metadata, markdown body for the persona prompt. Simple, portable, model-agnostic.</p>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span class="code-filename">skins/your-skin/SKIN.md</span>
+        <span class="code-lang">yaml + markdown</span>
+      </div>
+      <pre><span class="yaml-sep">---</span>
+<span class="yaml-key">name</span><span class="yaml-sep">:</span> <span class="yaml-val">your-skin-name</span>             <span class="comment"># kebab-case, must match directory</span>
+<span class="yaml-key">display-name</span><span class="yaml-sep">:</span> <span class="yaml-str">"Your Skin Name"</span>   <span class="comment"># human-readable title</span>
+<span class="yaml-key">description</span><span class="yaml-sep">:</span> <span class="yaml-val">&gt;</span>
+  <span class="yaml-val">One to three sentence description. Include when to use this skin.</span>
+<span class="yaml-key">category</span><span class="yaml-sep">:</span> <span class="yaml-val">fictional</span>              <span class="comment"># fictional | archetype | historical | brand</span>
+<span class="yaml-key">tags</span><span class="yaml-sep">:</span> <span class="yaml-val">[witty, adventurous, bold]</span>
+<span class="yaml-key">emoji</span><span class="yaml-sep">:</span> <span class="yaml-str">"🎭"</span>                      <span class="comment"># single emoji representing the character</span>
+<span class="yaml-key">compatibility</span><span class="yaml-sep">:</span> <span class="yaml-val">claude, gpt-4, gemini, cursor, codex</span>
+<span class="yaml-key">author</span><span class="yaml-sep">:</span> <span class="yaml-val">your-github-username</span>
+<span class="yaml-key">version</span><span class="yaml-sep">:</span> <span class="yaml-str">"1.0"</span>
+<span class="yaml-key">license</span><span class="yaml-sep">:</span> <span class="yaml-val">MIT</span>
+<span class="yaml-key">preview</span><span class="yaml-sep">:</span> <span class="yaml-str">"A short, in-character quote shown on the marketplace card."</span>
+<span class="yaml-key">inspired-by</span><span class="yaml-sep">:</span> <span class="yaml-str">"Source material"</span>   <span class="comment"># optional</span>
+<span class="yaml-sep">---</span>
+
+<span class="heading"># Character Name</span>
+
+<span class="heading">## Persona Overview</span>
+<span class="em">Who the character is. 2-3 sentences setting the scene.</span>
+
+<span class="heading">## Core Personality Traits</span>
+<span class="em">Bullet list of key traits that define the character.</span>
+
+<span class="heading">## Speech Patterns</span>
+<span class="em">How the character speaks — syntax, vocabulary, cadence, recurring phrases.</span>
+
+<span class="heading">## Behavioral Guidelines</span>
+<span class="em">How the character approaches tasks, problems, and interaction.</span>
+
+<span class="heading">## Signature Phrases</span>
+<span class="em">Memorable lines the character might use.</span>
+
+<span class="heading">## Example Interactions</span>
+<span class="em">2-3 example Q&A pairs showing the character in action.</span></pre>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-glow"></div>
+    <div class="cta-title">Submit your skin 🎭</div>
+    <p class="cta-sub">Built a skin you love? Contribute it to the community and let everyone use it.</p>
+    <div class="cta-buttons">
+      <a href="https://github.com/azw293/agent-skins/fork" target="_blank" class="btn-primary">
+        🍴 Fork & Submit
+      </a>
+      <a href="https://github.com/azw293/agent-skins/blob/main/CONTRIBUTING.md" target="_blank" class="btn-secondary">
+        📋 Contribution Guide
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-logo">skins<span>.sh</span></span>
+      <span class="footer-copy">Open source, MIT License</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/azw293/agent-skins" target="_blank" class="footer-link">GitHub</a>
+      <a href="https://github.com/azw293/agent-skins/blob/main/SPEC.md" target="_blank" class="footer-link">Spec</a>
+      <a href="https://github.com/azw293/agent-skins/blob/main/CONTRIBUTING.md" target="_blank" class="footer-link">Contribute</a>
+      <a href="https://github.com/azw293/agent-skins/issues" target="_blank" class="footer-link">Issues</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ Copied to clipboard</div>
+
+<script>
+  const SKINS = [
+    {
+      name: "jack-sparrow",
+      displayName: "Captain Jack Sparrow",
+      description: "A roguish, eccentric pirate captain who speaks with wit, swagger, and unpredictable wisdom. Use this skin when you want your agent to be charismatic, quirky, and full of unexpected philosophical tangents.",
+      category: "fictional",
+      tags: ["pirate", "movie", "witty", "charismatic", "adventurous", "eccentric"],
+      emoji: "🏴‍☠️",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "Now, me hearties — the question isn't whether you can or you can't. It's whether you're willing to find out which.",
+      inspiredBy: "Pirates of the Caribbean"
+    },
+    {
+      name: "yoda",
+      displayName: "Master Yoda",
+      description: "The ancient Jedi Grand Master who speaks in inverted syntax and communicates profound wisdom through paradox and patience.",
+      category: "fictional",
+      tags: ["jedi", "star-wars", "wise", "philosophical", "patient"],
+      emoji: "🟢",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "Do or do not. There is no try.",
+      inspiredBy: "Star Wars"
+    },
+    {
+      name: "sherlock-holmes",
+      displayName: "Sherlock Holmes",
+      description: "The world's only consulting detective — hyper-logical, brutally observant, and refreshingly blunt. Cold precision, instant deduction, theatrical confidence.",
+      category: "fictional",
+      tags: ["detective", "mystery", "logical", "analytical", "british", "genius"],
+      emoji: "🔍",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "When you have eliminated the impossible, whatever remains, however improbable, must be the truth.",
+      inspiredBy: "Arthur Conan Doyle"
+    },
+    {
+      name: "wednesday-addams",
+      displayName: "Wednesday Addams",
+      description: "Deadpan, gothic, and razor-sharp. Delivers brutal honesty wrapped in dry wit and zero emotional performance.",
+      category: "fictional",
+      tags: ["gothic", "dark", "deadpan", "witty", "honest"],
+      emoji: "🕷️",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "I don't need your enthusiasm. I need your answer.",
+      inspiredBy: "The Addams Family"
+    },
+    {
+      name: "tony-stark",
+      displayName: "Tony Stark",
+      description: "Genius billionaire engineer — rapid-fire technical problem-solving with maximum confidence and just enough self-awareness to be charming.",
+      category: "fictional",
+      tags: ["genius", "engineer", "sarcastic", "confident", "tech"],
+      emoji: "🦾",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "I am Iron Man. Also, your architecture is fundamentally broken and here's exactly how to fix it.",
+      inspiredBy: "Marvel's Iron Man"
+    },
+    {
+      name: "noir-detective",
+      displayName: "Noir Detective",
+      description: "A hard-boiled 1940s private eye who narrates problems like a mystery and delivers wisdom with weary gravitas.",
+      category: "archetype",
+      tags: ["detective", "noir", "cynical", "atmospheric", "metaphorical"],
+      emoji: "🕵️",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "The city never sleeps. Neither does a bug in production.",
+      inspiredBy: null
+    },
+    {
+      name: "stoic-philosopher",
+      displayName: "The Stoic Philosopher",
+      description: "A calm, ancient Stoic in the tradition of Marcus Aurelius and Epictetus. Responds to chaos with equanimity and timeless wisdom.",
+      category: "archetype",
+      tags: ["stoic", "philosophy", "calm", "wisdom", "ancient"],
+      emoji: "🏛️",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "You have power over your mind, not outside events. Realize this, and you will find strength.",
+      inspiredBy: "Marcus Aurelius, Epictetus, Seneca"
+    },
+    {
+      name: "pirate-captain",
+      displayName: "Pirate Captain",
+      description: "The classic swaggering pirate archetype — bold, seafaring, treasure-hungry, and full of salty wisdom. No specific IP.",
+      category: "archetype",
+      tags: ["pirate", "seafarer", "adventurous", "bold", "nautical"],
+      emoji: "⚓",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "Every problem's got a treasure buried in it, if ye know where to dig.",
+      inspiredBy: null
+    },
+    {
+      name: "samurai-warrior",
+      displayName: "The Samurai",
+      description: "A disciplined samurai guided by Bushido. Quiet precision, mastery above all else, deliberate without waste.",
+      category: "archetype",
+      tags: ["samurai", "bushido", "discipline", "mastery", "warrior"],
+      emoji: "⚔️",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "A sword that is never sharpened will not cut.",
+      inspiredBy: null
+    },
+    {
+      name: "mad-scientist",
+      displayName: "The Mad Scientist",
+      description: "A brilliant, excitable scientist who sees EVERYTHING as an experiment. Manic energy, celebrates failures as data, genuinely excited about figuring things out.",
+      category: "archetype",
+      tags: ["scientist", "enthusiastic", "experimental", "curious", "creative"],
+      emoji: "🧪",
+      compatibility: ["claude", "gpt-4", "gemini", "cursor"],
+      author: "agent-skins",
+      version: "1.0",
+      license: "MIT",
+      preview: "EXCELLENT! An error! Do you know what errors mean? DATA. Beautiful, beautiful data!",
+      inspiredBy: null
+    }
+  ];
+
+  let activeFilter = 'all';
+
+  function filter(cat, btn) {
+    activeFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const grid = document.getElementById('grid');
+
+    const filtered = SKINS.filter(s => {
+      const matchesFilter = activeFilter === 'all' || s.category === activeFilter;
+      const matchesSearch = !query ||
+        s.displayName.toLowerCase().includes(query) ||
+        s.description.toLowerCase().includes(query) ||
+        s.tags.some(t => t.toLowerCase().includes(query)) ||
+        s.category.toLowerCase().includes(query) ||
+        s.preview.toLowerCase().includes(query);
+      return matchesFilter && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="no-results">No skins found. <a href="https://github.com/azw293/agent-skins" style="color: var(--accent3); text-decoration: none;">Submit one?</a></div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(skin => `
+      <div class="card" onclick="openModal('${skin.name}')">
+        <div class="card-head">
+          <div class="card-emoji">${skin.emoji}</div>
+          <span class="card-category cat-${skin.category}">${skin.category}</span>
+        </div>
+        <div class="card-name">${skin.displayName}</div>
+        <div class="card-desc">${skin.description}</div>
+        <div class="card-preview">"${skin.preview}"</div>
+        <div class="card-tags">
+          ${skin.tags.slice(0, 4).map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+        <div class="card-footer">
+          <div class="card-compat">
+            ${skin.compatibility.slice(0, 3).map(c => `<span class="compat-badge">${c}</span>`).join('')}
+          </div>
+          <button class="card-install-btn" onclick="event.stopPropagation(); copyInstall('${skin.name}')">
+            ⎘ copy install
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openModal(name) {
+    const skin = SKINS.find(s => s.name === name);
+    if (!skin) return;
+
+    const installCmd = `npx skins add agent-skins --skin ${skin.name}`;
+    const manualCmd = `curl https://azw293.github.io/agent-skins/skins/${skin.name}/SKIN.md`;
+
+    document.getElementById('modal-content').innerHTML = `
+      <div class="modal-header">
+        <div class="modal-emoji">${skin.emoji}</div>
+        <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-name">${skin.displayName}</div>
+        <span class="modal-category card-category cat-${skin.category}">${skin.category}</span>
+        <p class="modal-desc">${skin.description}${skin.inspiredBy ? ` Inspired by: <em>${skin.inspiredBy}</em>.` : ''}</p>
+        <div class="modal-preview">
+          <div class="modal-preview-label">In-character preview</div>
+          <div class="modal-preview-text">"${skin.preview}"</div>
+        </div>
+
+        <div class="modal-section-title">Tags</div>
+        <div class="modal-tags">
+          ${skin.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}
+        </div>
+
+        <div class="modal-section-title" style="margin-bottom:10px">Install</div>
+        <div class="modal-install">
+          <div class="modal-install-header">
+            <span class="modal-install-label">Via npx (recommended)</span>
+            <button class="modal-copy-btn" onclick="copyText('${installCmd}')">⎘ Copy</button>
+          </div>
+          <div class="modal-install-code">
+            <span class="kw">npx skins</span> add agent-skins <span class="flag">--skin</span> <span class="str">${skin.name}</span>
+          </div>
+        </div>
+        <div class="modal-install">
+          <div class="modal-install-header">
+            <span class="modal-install-label">Manual — copy raw SKIN.md</span>
+            <button class="modal-copy-btn" onclick="copyText('${manualCmd}')">⎘ Copy</button>
+          </div>
+          <div class="modal-install-code">
+            <span class="kw">curl</span> <span class="str">https://azw293.github.io/agent-skins/skins/${skin.name}/SKIN.md</span>
+          </div>
+        </div>
+        <div class="modal-install" style="margin-bottom:24px">
+          <div class="modal-install-header">
+            <span class="modal-install-label">Add to CLAUDE.md directly</span>
+            <button class="modal-copy-btn" onclick="copyText('cat skins/${skin.name}/SKIN.md >> CLAUDE.md')">⎘ Copy</button>
+          </div>
+          <div class="modal-install-code">
+            <span class="kw">cat</span> skins/<span class="str">${skin.name}</span>/SKIN.md <span class="flag">>></span> CLAUDE.md
+          </div>
+        </div>
+
+        <div class="modal-section-title">Details</div>
+        <div class="modal-meta">
+          <div class="meta-item"><div class="meta-key">Author</div><div class="meta-val">${skin.author}</div></div>
+          <div class="meta-item"><div class="meta-key">Version</div><div class="meta-val">${skin.version}</div></div>
+          <div class="meta-item"><div class="meta-key">License</div><div class="meta-val">${skin.license}</div></div>
+          <div class="meta-item"><div class="meta-key">Compatible with</div><div class="meta-val">${skin.compatibility.join(', ')}</div></div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal')) {
+      document.getElementById('modal').classList.remove('open');
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.getElementById('modal').classList.remove('open');
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast('✓ Copied to clipboard'));
+  }
+
+  function copyInstall(name) {
+    copyText(`npx skins add agent-skins --skin ${name}`);
+  }
+
+  function copyHero() {
+    copyText('npx skins add agent-skins --skin jack-sparrow');
+  }
+
+  // Init
+  renderGrid();
+</script>
+
+</body>
+</html>

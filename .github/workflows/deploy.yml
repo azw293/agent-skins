@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate skins
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check SKIN.md files exist
+        run: |
+          for dir in skins/*/; do
+            skin_name=$(basename "$dir")
+            skin_file="${dir}SKIN.md"
+            if [ ! -f "$skin_file" ]; then
+              echo "❌ Missing SKIN.md in $dir"
+              exit 1
+            fi
+            echo "✓ $skin_name"
+          done
+          echo "All skins validated!"
+
+      - name: Validate frontmatter fields
+        run: |
+          for file in skins/*/SKIN.md; do
+            # Check required fields exist in frontmatter
+            for field in name display-name description category tags emoji compatibility author version license preview; do
+              if ! grep -q "^$field:" "$file" && ! grep -q "^${field}: " "$file"; then
+                echo "⚠️  $file may be missing field: $field"
+              fi
+            done
+          done
+
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
